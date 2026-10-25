@@ -8,17 +8,27 @@ already persists; it writes no extra files and makes no network requests.
 
 ## Quick start
 
-Targets omp `18.12.6`. Clone the repository and link it as a plugin:
+Targets omp `18.12.6`.
+
+Install directly from GitHub:
+
+```sh
+omp plugin install github:tralamazza/omp-live-stats
+omp plugin list
+```
+
+Pin a tag or commit by appending `#<tag-or-commit>` to the source.
+
+`omp plugin list` should include `omp-live-stats`. Start a new omp session; the
+compact status appears after the first completed response.
+
+For development, clone the repository and link the checkout instead:
 
 ```sh
 git clone https://github.com/tralamazza/omp-live-stats.git
 cd omp-live-stats
 omp plugin link .
-omp plugin list
 ```
-
-`omp plugin list` should include `omp-live-stats`. Start a new omp session; the
-compact status appears after the first completed response.
 
 To try it without installing, run from the checkout:
 
