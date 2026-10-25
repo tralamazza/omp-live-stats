@@ -2,6 +2,7 @@
   "name": "omp-live-stats",
   "version": "0.1.0",
   "description": "Output-token throughput and estimated prefill speed for Oh My Pi sessions",
+  "license": "MIT",
   "type": "module",
   "omp": {
     "extensions": ["./src/index.ts"]

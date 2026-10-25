@@ -155,3 +155,7 @@ There is no build step: `omp.extensions` points directly at `src/index.ts`.
 
 `@oh-my-pi/pi-coding-agent` and `@oh-my-pi/pi-ai` are pinned to `18.12.6` for
 types and the TPS helper; omp provides the runtime host.
+
+## License
+
+[MIT](LICENSE) © Daniel Tralamazza
