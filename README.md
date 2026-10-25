@@ -79,6 +79,10 @@ By default the compact status uses omp's hook-status row below the editor. To
 render it inside the powerline bar instead, add the `status` segment to a custom
 status-line preset.
 
+If `status` is missing, the first interactive session shows a one-line hint
+pointing to the config block. It is shown once per omp process, not on every
+session.
+
 This example preserves the built-in `default` preset's segments and options and
 inserts `status` after `mode`:
 

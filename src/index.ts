@@ -1,10 +1,44 @@
 import type { AssistantMessage } from "@oh-my-pi/pi-ai";
-import type { ExtensionAPI, ExtensionContext } from "@oh-my-pi/pi-coding-agent";
+import { type ExtensionAPI, type ExtensionContext, settings } from "@oh-my-pi/pi-coding-agent";
 import { formatReport, formatStatus } from "./format";
 import { collectAssistantMessages, measureResponse, summarizeSession, type ResponseMeasurement } from "./stats";
 
 const STATUS_KEY = "live-stats";
 const WIDGET_KEY = "live-stats";
+const POWERLINE_HINT =
+	'live-stats: to show this in the bar, add "status" to a custom statusLine.leftSegments. See README "Put it in the powerline" for the full block.';
+
+interface StatusLineLayer {
+	preset?: unknown;
+	leftSegments?: unknown;
+	rightSegments?: unknown;
+}
+
+/** Whether the configured status line already renders this extension's status segment. */
+function statusInPowerline(): boolean {
+	const globalLayer = settings.getGlobalSettings().statusLine as StatusLineLayer | undefined;
+	const projectLayer = settings.getProjectSettings().statusLine as StatusLineLayer | undefined;
+	const merged: StatusLineLayer = { ...globalLayer, ...projectLayer };
+	if (merged.preset !== "custom") return false;
+	return (
+		(Array.isArray(merged.leftSegments) && merged.leftSegments.includes("status")) ||
+		(Array.isArray(merged.rightSegments) && merged.rightSegments.includes("status"))
+	);
+}
+
+let powerlineHintShown = false;
+
+/** One short prompt per omp process, only while the status segment is not configured. */
+function maybeShowPowerlineHint(ctx: ExtensionContext): void {
+	if (powerlineHintShown || !ctx.hasUI || ctx.agent.kind !== "main") return;
+	powerlineHintShown = true;
+	try {
+		if (statusInPowerline()) return;
+	} catch {
+		return;
+	}
+	ctx.ui.notify(POWERLINE_HINT, "info");
+}
 
 /**
  * Keeps a compact footer status and an on-demand report backed by the
@@ -48,7 +82,10 @@ export default function liveStats(pi: ExtensionAPI): void {
 		showReport(ctx, readMessages(ctx));
 	});
 
-	pi.on("session_start", (_event, ctx) => refresh(ctx));
+	pi.on("session_start", (_event, ctx) => {
+		maybeShowPowerlineHint(ctx);
+		refresh(ctx);
+	});
 	pi.on("session_switch", (_event, ctx) => refresh(ctx));
 	pi.on("session_branch", (_event, ctx) => refresh(ctx));
 	pi.on("session_tree", (_event, ctx) => refresh(ctx));
