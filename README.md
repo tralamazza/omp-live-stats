@@ -6,6 +6,8 @@ The extension shows a compact readout for the last completed response and an
 on-demand report for the current branch. It reads the session messages omp
 already persists; it writes no extra files and makes no network requests.
 
+![omp-live-stats in the powerline status line](assets/status-line.png)
+
 ## Quick start
 
 Targets omp `18.12.6`.
