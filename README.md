@@ -44,13 +44,13 @@ or the prompt had no uncached tokens. Errors and aborts are still counted.
 Link the working copy:
 
 ```sh
-omp plugin link /home/tralamazza/github/tralamazza/omp-live-stats
+omp plugin link .
 ```
 
 Or load it for a single run:
 
 ```sh
-omp --no-extensions -e /home/tralamazza/github/tralamazza/omp-live-stats/src/index.ts
+omp --no-extensions -e ./src/index.ts
 ```
 
 ## Powerline status line
