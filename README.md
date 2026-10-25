@@ -4,7 +4,7 @@ Oh My Pi extension for measured output throughput and estimated prefill speed.
 
 ## Status and report
 
-The footer shows the last completed assistant response:
+The status line shows the last completed assistant response:
 
 ```
 Last TPS 60.0 tok/s · Prefill ~2400.0 tok/s
@@ -53,9 +53,43 @@ Or load it for a single run:
 omp --no-extensions -e /home/tralamazza/github/tralamazza/omp-live-stats/src/index.ts
 ```
 
-The footer status relies on omp's hook-status rendering. With `showHookStatus`
-enabled (the default) it trails the configured status segments; a custom preset
-must include the `status` segment instead.
+## Powerline status line
+
+The compact status is emitted through `ctx.ui.setStatus`, which omp renders via
+its `status` segment. Add that segment to a custom preset to place the readout
+inside the powerline bar instead of on the hook-status row below the editor.
+
+This example preserves the built-in `default` preset's segments and options and
+inserts `status` after `mode`:
+
+```yaml
+statusLine:
+  preset: custom
+  leftSegments: ["pi", "vim", "model", "mode", "status", "collab", "stream", "path", "git", "pr", "context_pct", "cost"]
+  rightSegments: ["session_name"]
+  separator: powerline-thin
+  segmentOptions:
+    model:
+      showThinkingLevel: true
+    path:
+      abbreviate: true
+      maxLength: 40
+      stripWorkPrefix: true
+    git:
+      showBranch: true
+      showStaged: true
+      showUnstaged: true
+      showUntracked: true
+  showHookStatus: false
+```
+
+Add the block to `~/.omp/agent/config.yml`. `preset: custom` is required because
+the other presets ignore `leftSegments`/`rightSegments` and none includes
+`status`; a custom preset starts with empty `segmentOptions`, so copy the
+options above to keep the default path and git rendering. Set
+`showHookStatus: false` to avoid the same text also appearing as a row below the
+editor. The equivalent settings can be written with `omp config set` using JSON
+for the array and record values.
 
 ## Development
 
