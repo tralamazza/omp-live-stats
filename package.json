@@ -1,0 +1,16 @@
+{
+  "name": "omp-live-stats",
+  "version": "0.1.0",
+  "description": "Output-token throughput and estimated prefill speed for Oh My Pi sessions",
+  "type": "module",
+  "omp": {
+    "extensions": ["./src/index.ts"]
+  },
+  "scripts": {
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@oh-my-pi/pi-ai": "18.12.6",
+    "@oh-my-pi/pi-coding-agent": "18.12.6"
+  }
+}
